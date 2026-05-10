@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stochastic Processes| Math Simulations</title>
+  <meta name="description"
+    content="A Python recreation of an older statistical physics project on non-normalizable Boltzmann distributions and diffusing diffusivity near a wall." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="../../index.html">← Back to homepage</a>
+
+    <header class="page-header">
+      <p class="eyebrow">Statistical physics rebuild (under construction)</p>
+      <h1>Modelling With Randomness</h1>
+
+
+      <p class="lede">
+        <strong> This page is under construction!</strong> This project is a rebuild from an older school project for
+        Math 522: Random Walks, at Colorado State University. The original MATLAB code was lost when I graduated and I
+        fead AI my old write up and had it convert the project to python but I have yet to go through and validate it.
+
+        My idea for this project:
+      <ul>
+        <li>Introduce Brownian Motion as a natural phenomena.
+        </li>
+        <li> Pivot to how averages are used to study randomness. In practical terms this often means running a
+          simulation with involving a random number generator and averaging the trials to get a feel for how the system
+          tend to evolve.
+        </li>
+        <li>
+          Introduce my old project and the paper(s) it references and demonstrate how stochastic processes are used in
+          various sciences. In this particule paper, it's particle physics.
+        </li>
+        <ul>
+          <li>Technical -> My particular project used an overdamped Langevin particle near a charged wall, compares the
+            constant-diffusivity dynamics to a long-time scaling profile, and then studies
+            position-dependent diffusivity models that produce near-linear MSD with non-Gaussian displacement
+            statistics.
+          </li>
+          <li> Non-technical ->
+            Electrostatic forces decay rapidly with distance, we know this when we stick a charged balloon to a wall and
+            pull it away ever so slightly and it falls. There is a near-wall zone where the balloon will be attracted to
+            the wall and a "far away" zone where the balloon will drift through the air. This same phenomena happens on
+            a microscopic level and that's sort of what my project looks at: combining a region of ordered motion,
+            repulsion/attraction, with a region of floating diffusion.
+          </li>
+
+        </ul>
+
+      </ul>
+
+
+
+
+
+
+
+      </p>
+
+      <p>
+        The physical picture is a Brownian sphere suspended near a wall. The wall creates an exponentially decaying
+        repulsive potential
+        \(V(x)=V_0 e^{-x/\ell_d}\), while the local diffusivity changes with distance from the wall.
+        This makes the project a nice meeting point between soft-matter diffusion and asymptotically flat potentials.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <p class="meta-label">Source</p>
+          <p><code>projects/non-normalizable-boltzmann/non_normalizable_boltzmann.ipynb</code></p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Outputs</p>
+          <p>Five generated PNG figures in <code>projects/non-normalizable-boltzmann/images/</code></p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Tools</p>
+          <p>Python, NumPy, and Matplotlib</p>
+        </div>
+      </div>
+
+      <div class="page-actions">
+        <a class="button button-primary" href="./non_normalizable_boltzmann.ipynb">
+          Open Notebook
+        </a>
+        <a class="button button-secondary" href="./non_normalizable_boltzmann.py">
+          Open Python Script
+        </a>
+      </div>
+    </header>
+
+    <section class="showcase-grid mnist-layout">
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Introduction: Diffusion and Brownian Motion</h2>
+          <span class="badge">Primary source</span>
+        </div>
+        <p>
+          Per Wikipedia on Brownian Motion: <i>"Scottish botanist Robert Brown, who first described the phenomenon in
+            1827, while looking through a microscope at pollen ... immersed in water."</i>
+
+          And wikipedia has the accompanying simulation
+          <img class="image-frame" src="./Brownian_motion_large.gif" alt="Animated illustration of Brownian motion.">
+
+          There is a lot happening in this simulation and the detail can get lost. I didn't build the wikipedia
+          simulator but based on my knowledge and what they're trying to convey with it, here is how I think it works.
+          <i>Note: There is an interplay between what we are trying to communicate to you about Brownian motion and how
+            the simulator works!</i>
+        <ul>
+          <li>The noisey/buzzing black dots represent water molecules. They are likely following a particle fluid
+            simulator, just
+            like we had in the
+            <a href="../parabola-average/favg_index.html"><i>Average Value via Fluid Dynamics</i></a>
+            project.
+            Essentially, we discretize time into chunks \(t_k = k\cdots \Delta t\) and create an animation via
+            constantly
+            updating position (and velocity, (\ v_{dot}\)) of each particle according to
+
+            \[pos_{dot}(t_k) = pos_{dot}(t_{k-1})+v_{dot}(t_{k-1})\cdot \Delta t\]
+            \[v_{dot}(t_k) = v_{dot}(t_{k-1})+\frac{force(t_{k-1})}{m_{dot}}\cdot \Delta t \]
+
+            The force on a given particle is computed via pressure and collision forces and (\ m_{dot} \) is the mass of
+            the water molecule.
+          </li>
+          <li>The yellow pollen grain is much larger and its motion is what we call Brownian motion. At any moment in
+            time (\t_k\), the net force on the pollen grain is the net force of all the molecular collision forces.
+            For programming purposes this just means that at time (\t_k\) we add up all the impacts with the Pollen to
+            get a net velocity vector.
+
+            \[pos_{pollen}(t_k) = pos_{pllen}(t_{k-1})+ vel_{pollen}(t_{k-1})\cdot \Delta t\]
+            \[v_{pollen}(t_k) = v_{pollen}(t_{k-1})+\frac{m_{dot}}{m_{pollen}}\left(\sum_{\text{dot hitting pollen}}
+            v_{dot}(t_{k-1})\right)\cdot \Delta t\]
+
+          </li>
+          <li>
+            The trajectory of the pollen grain is
+            The orientation of the random vector can be modelled as a uniform random sample on \( \theta\in[0,2\pi) \)
+          </li>
+        </ul>
+
+
+        </p>
+
+      </article>
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Boltzmann</h2>
+          <span class="badge">Primary source</span>
+        </div>
+        <p>
+          In statistical mechanics, everything is probabilistic. One of the simplest examples is Brownian motion: even
+          when no obvious force is present, a small particle in a thermal bath jitters unpredictably because of many
+          tiny collisions with the surrounding fluid.
+        </p>
+        <p>
+          A common way to study this kind of randomness is through an ensemble average. If we simulate many particle
+          paths \(x_t^{(1)}, x_t^{(2)}, \ldots, x_t^{(N)}\) and average them at a fixed time \(t\), we get
+          \(\langle x_t \rangle\), the average position of the whole collection at that time. This kind of averaging
+          appears all over applied mathematics and probability, including diffusion models, the Black-Scholes equation,
+          Langevin dynamics, Monte Carlo methods, and stochastic models in biology and soft matter physics.
+        </p>
+        <p>
+          In this project the randomness is influenced by a potential field that is strong near a wall, located at
+          \(x=0\), but weak far
+          away, with \(V(x) \to 0\) as \(x \to \infty\). That means there are two competing effects. Close to the
+          wall, the potential strongly shapes the motion; farther away, the force fades and ordinary diffusion becomes
+          more important. The trajectory plots on this page are meant to make that transition visible.
+        </p>
+        <img class="image-frame" src="./images/nnbd_particle_trajectories.png"
+          alt="Position versus time for several simulated particles near the charged wall." />
+
+        <p>
+          The code builds those trajectories with an overdamped Langevin update: at each time step it computes the
+          local drift coming from the potential, adds a random Brownian increment, and reflects particles away from the
+          wall if they try to cross it. Repeating that step many times gives individual sample paths, and repeating the
+          whole simulation many times gives the ensemble statistics used in the later figures.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Scaling profile</h2>
+          <span class="badge">Constant diffusivity</span>
+        </div>
+        <p>
+          For the exponentially decaying potential, the simulation is compared to the shape of the expected scaling
+          profile. The plotted curve is fit in amplitude at the final time so the visual comparison focuses on shape
+          rather than the exact finite-time prefactor.
+        </p>
+        <img class="image-frame" src="./images/nnbd_scaling_solution.png"
+          alt="Histogram of simulated particle positions with a fitted scaling profile overlay." />
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Velocity check</h2>
+          <span class="badge">Drift validation</span>
+        </div>
+        <p>
+          The ensemble drift from the simulation tracks \(F(x)/\gamma\), which is the deterministic drift term in
+          the overdamped Langevin model.
+        </p>
+        <img class="image-frame" src="./images/nnbd_velocity_validation.png"
+          alt="Comparison of theoretical and simulated drift velocity near the wall." />
+      </article>
+
+
+    </section>
+
+    <section class="resource-grid">
+      <article class="resource-card">
+        <h3>Mean-square displacement</h3>
+        <p>
+          The wall-dependent diffusivity models both produce displacement variance that remains close to linear in time,
+          even though the diffusion rate depends on position.
+        </p>
+        <img class="image-frame" src="./images/diffusing_diffusivity_msd.png"
+          alt="Two-panel MSD figure for two different near-wall diffusivity models." />
+      </article>
+
+      <article class="resource-card">
+        <h3>Kurtosis</h3>
+        <p>
+          The displacement distribution is not perfectly Gaussian near the wall. The excess kurtosis stays away from
+          zero for long stretches of time, which is the statistical signature this rebuild is trying to capture.
+        </p>
+        <img class="image-frame" src="./images/diffusing_diffusivity_kurtosis.png"
+          alt="Excess kurtosis over time for two near-wall diffusivity models." />
+      </article>
+    </section>
+
+    <section class="resource-grid">
+      <article class="resource-card">
+        <h3>How to rerun it</h3>
+        <p>
+          The notebook can be opened directly in VS Code and run cell by cell. If you want the script version instead,
+          from the repository root run:
+        </p>
+        <pre
+          class="code-block"><code class="language-bash">python3 projects/non-normalizable-boltzmann/non_normalizable_boltzmann.py</code></pre>
+        <p>
+          Both versions are built around the same model and write the same four PNGs in
+          <code>projects/non-normalizable-boltzmann/images/</code>.
+        </p>
+      </article>
+
+      <article class="resource-card">
+        <h3>What changed from the old project</h3>
+        <p>
+          This version uses Euler-Maruyama time stepping in Python rather than the original discrete MATLAB walk. That
+          keeps the implementation compact and makes the stochastic equations easier to inspect and modify.
+        </p>
+      </article>
+    </section>
+
+    <div class="footer-space"></div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="../../scripts/site.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</body>
+
+</html>

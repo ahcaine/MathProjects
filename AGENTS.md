@@ -11,11 +11,10 @@ The immediate goal is to publish the site on GitHub Pages and use it as a lightw
 - `index.html`: homepage for the site
 - `styles.css`: shared visual styling
 - `scripts/site.js`: loads Python source files into syntax-highlighted code blocks
-- `projects/parabola-average.html`: hosted example page using a real Manim animation
-- `projects/lorenz-attractor.html`: reusable template/example page
-- `examples/FluidAverageValue.py`: imported Manim source file
-- `examples/lorenz.py`: sample Python example
-- `media/videos/parabola_avg.mp4`: hosted MP4 for the parabola average-value animation
+- `projects/parabola-average/`: hosted example project using a real Manim animation
+- `projects/lorenz-attractor/`: reusable template/example project
+- `projects/`: preferred home for each project page, code, and project-specific media
+- `media/images/`: shared site imagery such as the homepage slideshow
 
 ## User Context
 
@@ -38,12 +37,12 @@ The immediate goal is to publish the site on GitHub Pages and use it as a lightw
 
 The main real example at the moment is:
 
-- `projects/parabola-average.html`
+- `projects/parabola-average/`
 
 This page uses:
 
-- `examples/FluidAverageValue.py`
-- `media/videos/parabola_avg.mp4`
+- `projects/parabola-average/FluidAverageValue.py`
+- `projects/parabola-average/parabola_avg.mp4`
 
 The animation shows a parabola, a particle-based fill of the region, and a horizontal line corresponding to the average value.
 
@@ -80,11 +79,10 @@ If this repository is the special user site repo for the account, the final URL 
 
 When adding a new animation:
 
-1. Copy an existing page in `projects/`.
-2. Add the Python source file to `examples/`.
-3. Add the MP4 to `media/videos/`.
-4. Update the page title, summary text, code source path, and video path.
-5. Add a homepage link from `index.html`.
+1. Copy an existing project folder in `projects/`.
+2. Keep that project's HTML, source code, notebook/data files, and short media together.
+3. Update the page title, summary text, code source path, and video/image paths.
+4. Add a homepage link from `index.html`.
 
 ## Near-Term Priorities
 

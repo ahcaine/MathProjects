@@ -59,11 +59,11 @@ Use a structure like this:
 
 - Reuse the current site’s static approach and styling rather than introducing any framework.
 - Reuse the existing “code from file” pattern for Python examples where possible.
-- Add a new directory for the SVD section rather than mixing those pages into `projects/`.
+- Add a new directory for the SVD section rather than mixing those pages into a shared pages folder.
 - Keep video support flexible:
   - short local MP4s for brief demonstrations
   - YouTube embeds or links for lecture/playlist material
-- Store future SVD/MNIST Python examples in `examples/` unless a dedicated subfolder is later needed.
+- Store future SVD/MNIST code, data, and figures together inside a dedicated project folder.
 
 ### Public-facing additions
 

@@ -7,14 +7,12 @@ Project context, goals, and deployment notes are also stored in `AGENTS.md`.
 ## Structure
 
 - `index.html` is the homepage.
-- `projects/parabola-average.html` is a hosted Manim example page.
-- `projects/lorenz-attractor.html` is a sample simulation page.
+- `projects/parabola-average/` is a hosted Manim example project.
+- `projects/lorenz-attractor/` is a sample simulation project.
 - `styles.css` contains the layout and visual styling.
 - `scripts/site.js` adds small interactions and auto-loads example code.
-- `examples/lorenz.py` is the sample Python file shown on the simulation page.
-- `examples/FluidAverageValue.py` is your imported Manim example.
-- `media/videos/` is where you can place local MP4 files.
-- `media/images/` is available for posters, diagrams, or thumbnails.
+- `projects/` holds self-contained project folders with each page, its code, and its project-specific media together.
+- `media/images/` is reserved for shared site images such as the homepage slideshow.
 
 ## Local Preview
 
@@ -45,11 +43,11 @@ GitHub will then host the files directly from this repository.
 
 ## Adding a New Simulation
 
-1. Copy `projects/lorenz-attractor.html` to a new file.
-2. Add your Python file to `examples/`.
-3. Place your MP4 in `media/videos/`.
-4. Update the page title, summary, code path, and video path.
-5. Add a link to the new page from `index.html`.
+1. Copy `projects/lorenz-attractor/` to a new project folder.
+2. Rename the copied `index.html` and code file references as needed.
+3. Place your MP4, notebook, figures, or Python source inside that project folder.
+4. Update the page title, summary, and local file paths.
+5. Add a link to the new project from `index.html`.
 
 ## Notes
 

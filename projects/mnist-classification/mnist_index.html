@@ -12,12 +12,12 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../../styles.css" />
 </head>
 
 <body>
   <main class="page-shell">
-    <a class="back-link" href="../index.html">← Back to homepage</a>
+    <a class="back-link" href="../../index.html">← Back to homepage</a>
 
     <header class="page-header">
       <p class="eyebrow">MNIST project journal</p>
@@ -32,15 +32,15 @@
       <!-- <div class="meta-grid"> -->
       <div class="meta-item">
         <p class="meta-label">Working notebook</p>
-        <p><code>examples/MNIST_playground.ipynb</code></p>
+        <p><code>projects/mnist-classification/MNIST_playground.ipynb</code></p>
       </div>
       <!-- </div> -->
 
       <div class="page-actions">
-        <a class="button button-primary" href="../examples/MNIST_playground.ipynb">
+        <a class="button button-primary" href="./MNIST_playground.ipynb">
           Open Notebook
         </a>
-        <a class="button button-secondary" href="../data/mnist/mnist_preview.png">
+        <a class="button button-secondary" href="./images/mnist_preview.png">
           Open Preview Image
         </a>
       </div>
@@ -49,7 +49,7 @@
     <section class="showcase-grid mnist-layout">
       <article class="panel">
         <div class="panel-header">
-          <h2>Digit Classifier (simple computer vision)</h2>
+          <h2>Digit Classifier (Tags: simple computer vision, supervised learning, linear algebra)</h2>
           <span class="badge">In progress</span>
         </div>
         <p>
@@ -63,7 +63,7 @@
           The MNIST data set consists of 70,000 images of handwritten digits.
           Each image is a 28x28 grid of pixels (black and white intensities).
           Here are some sample images from the training set:
-          <img class="image-frame" src="../media/images/mnist_preview.png"
+          <img class="image-frame" src="./images/mnist_preview.png"
             alt="Preview of MNIST handwritten digit samples" />
 
         </p>
@@ -90,7 +90,7 @@
         </ul>
         <p>
           For example, the first 6 images of "0" in \(A_0\) are:
-          <img class="image-frame" src="../media/images/zeros.png"
+          <img class="image-frame" src="./images/zeros.png"
             alt="Preview of the first 6 '0' digit samples in the MNIST training set" />
         </p>
         <p>
@@ -126,7 +126,7 @@
         </p>
         <p>
           Here are the first 2 Principal Components of the "0" matrix \(A_0\):
-          <img class="image-frame" src="../media/images/PCA0color.png"
+          <img class="image-frame" src="./images/PCA0color.png"
             alt="Preview of the first 2 singular vectors of the '0' digit matrix in the MNIST training set" />
 
           <br>
@@ -162,10 +162,10 @@
 
           Below is an example for various \(\alpha\) values, notice how positive \(\alpha\) increase slanting and
           negative \(\alpha\) decrease it.
-          <img class="image-frame" src="../media/images/difAvgPC0.png" alt="various alpha averages of first two PCs" />
+          <img class="image-frame" src="./images/difAvgPC0.png" alt="various alpha averages of first two PCs" />
 
           <!-- Here is an example using \(\alpha=0.2\):
-          <img class="image-frame" src="../media/images/avgPC0.png" alt="Example of a weighted average of the first two principal components of 
+          <img class="image-frame" src="./images/avgPC0.png" alt="Example of a weighted average of the first two principal components of 
               the '0' digit matrix in the MNIST training set, showing 
               how the second PC adds a slanting feature to 
               the first PC's overall shape." /> -->
@@ -185,7 +185,7 @@
           \[\text{NewImage} = (1-\alpha) \cdot \text{PC1} - \alpha \cdot \text{PC2},
           \quad 0 \le \alpha\le 1\]
           Here is an example for various \(\alpha\) values:
-          <img class="image-frame" src="../media/images/PC1mPC2.png"
+          <img class="image-frame" src="./images/PC1mPC2.png"
             alt="various neg alpha averages of first two PCs" />
 
         </p> -->
@@ -198,7 +198,7 @@
 
           <br><br>
           Here are the first 2 PCs for each digit (other than zero):
-          <img class="image-frame" src="../media/images/PCallDigits.png" alt="First 2 PCs of digits 1-9" />
+          <img class="image-frame" src="./images/PCallDigits.png" alt="First 2 PCs of digits 1-9" />
 
 
           <strong>
@@ -243,7 +243,7 @@
         </ul>
         Doing this with \(m=20\) PCs we get the following confustion matrix
         <p align="center">
-          <img src="../media/images/confusionMatrix.png" alt="Confusion Matrix">
+          <img src="./images/confusionMatrix.png" alt="Confusion Matrix">
         </p>
 
 
@@ -256,7 +256,7 @@
         There was nothing special about 20PCs and we can iterate this process to see how using different numbers of
         Principal Components influences the overally accuracy, both by digit and as an average.
 
-        <img src="../media/images/PCvAccur.png" alt="Accuracy vs. number of principal components"
+        <img src="./images/PCvAccur.png" alt="Accuracy vs. number of principal components"
           style="display:block; margin:1rem auto; max-width:100%; height:auto;">
 
         <strong>We can see from the Accuracy Plots</strong> a few interesting insights.
@@ -278,7 +278,7 @@
         Seeing how diverse the accuracy is by digit for a single principal component, I also decided to build a
         confusion matrix for a single PC classifier.
 
-        <img src="../media/images/confusionMatrix1pc.png" alt="Confusion with 1pc">
+        <img src="./images/confusionMatrix1pc.png" alt="Confusion with 1pc">
 
         <br>
 

@@ -34,13 +34,16 @@
       <ul>
         <li>Introduce Brownian Motion as a natural phenomena.
         </li>
-        <li> Pivot to how averages are used to study randomness. In practical terms this often means running a
-          simulation with involving a random number generator and averaging the trials to get a feel for how the system
-          tend to evolve.
+        <li>Introduce modeling Brownian Motion via iterative randomly generated steps.
+        </li>
+        <li> Demonstrate how averages are used to study randomness. In practical terms this often means running many
+          simulations and averaging the trials to get a feel for how the system
+          tends to evolve. (Averaging trials of simple brownian motion results in guassian diffusion.)
         </li>
         <li>
           Introduce my old project and the paper(s) it references and demonstrate how stochastic processes are used in
-          various sciences. In this particule paper, it's particle physics.
+          Statistical Physics. (Trajectories are probabilistic but we can still talk about where an average trajectory
+          tends to travel.)
         </li>
         <ul>
           <li>Technical -> My particular project used an overdamped Langevin particle near a charged wall, compares the
@@ -123,36 +126,136 @@
             like we had in the
             <a href="../parabola-average/favg_index.html"><i>Average Value via Fluid Dynamics</i></a>
             project.
-            Essentially, we discretize time into chunks \(t_k = k\cdots \Delta t\) and create an animation via
-            constantly
-            updating position (and velocity, (\ v_{dot}\)) of each particle according to
+            Essentially, we discretize time into chunks \(t_k = k\cdot \Delta t\) and the \(i^{th}\) particle at time
+            \(t_k\) has
+            position and velocity denoted \(p_{i,k},\ v_{i,k}\) respectively. These update using \(F=ma\) and linear
+            approximations:
 
-            \[pos_{dot}(t_k) = pos_{dot}(t_{k-1})+v_{dot}(t_{k-1})\cdot \Delta t\]
-            \[v_{dot}(t_k) = v_{dot}(t_{k-1})+\frac{force(t_{k-1})}{m_{dot}}\cdot \Delta t \]
+            \[p_{i,k} = p_{i,k-1}+v_{i,k-1}\cdot \Delta t\]
+            \[v_{i,k} = v_{i,k-1}+\frac{force(t_{k-1})}{m}\cdot \Delta t \]
 
-            The force on a given particle is computed via pressure and collision forces and (\ m_{dot} \) is the mass of
-            the water molecule.
+            The force on a given particle is computed via pressure and collision forces and \( m \) is the mass of
+            the water molecule. These are explored more indepth in <a
+              href="../parabola-average/favg_index.html"><i>Average Value via Fluid Dynamics</i></a>
           </li>
           <li>The yellow pollen grain is much larger and its motion is what we call Brownian motion. At any moment in
-            time (\t_k\), the net force on the pollen grain is the net force of all the molecular collision forces.
-            For programming purposes this just means that at time (\t_k\) we add up all the impacts with the Pollen to
-            get a net velocity vector.
+            time \(t_k\), the net momentum on the pollen grain is the sum of all the molecular collisions.
+            For programming purposes this just means that at time \(t_k\) we add up all the impacts with the Pollen to
+            get a net velocity vector. We will use capital letters \(P_k,\ V_k\) for the pollen's position and velocity
+            at time \(t_k\), and \(M\) for the mass of the pollen grain.
 
-            \[pos_{pollen}(t_k) = pos_{pllen}(t_{k-1})+ vel_{pollen}(t_{k-1})\cdot \Delta t\]
-            \[v_{pollen}(t_k) = v_{pollen}(t_{k-1})+\frac{m_{dot}}{m_{pollen}}\left(\sum_{\text{dot hitting pollen}}
-            v_{dot}(t_{k-1})\right)\cdot \Delta t\]
-
+            \[P_k = P_{k-1}+ V_{k-1}\cdot \Delta t\]
+            \[V_k = V_{k-1}+\frac{m}{M}\left(\sum_{\text{dot hitting pollen}}
+            v_{i,k}\right)\cdot \Delta t\]
+            <u>If you zoom in on the wikipedia animation you will see an orange \(V_k\) appear at times on the pollen
+              grain. </u>
           </li>
           <li>
-            The trajectory of the pollen grain is
-            The orientation of the random vector can be modelled as a uniform random sample on \( \theta\in[0,2\pi) \)
+            On can imagine the astronomical amount of water molecules hitting a pollen grain and the computational
+            complexity of running an "accurate" simulation.
+            Instead, we can <u>model</u> the trajectory of the pollen grain without the use of buzzing water molecules
+            by thinking of its
+            velocity at time \(t_k\), \(V_k\), as a random vector.
           </li>
         </ul>
-
-
         </p>
 
+        <p>
+          Here is an example of this model. In this example, we fix the step size, \(dx\), and randomly generate
+          \(\theta_k\in [0,2\pi)\) so that \(V_k = dx\cdot (\cos(\theta_k),\ \sin(\theta_k))\). There are two animations
+          but they are generated with the same ranom seed, hence the directions repeat, what changed is the step size -
+          making it easier to see the velocity \(V_k\) at each step.
+        </p>
+
+        <div class="resource-grid">
+          <article class="resource-card">
+            <h3>Small-step walk</h3>
+            <p>
+              A smaller value of \(dx\) makes the walk look more like gentle jitter. The direction still changes
+              randomly at each step, but the visual increments are subtle.
+            </p>
+            <video class="video-frame" controls preload="metadata" playsinline>
+              <source src="./media/videos/random_walk_manim/480p15/RandomWalkDot_dx04.mp4" type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+          </article>
+
+          <article class="resource-card">
+            <h3>Larger-step walk</h3>
+            <p>
+              Increasing \(dx\) makes the same random orientations much easier to track. This version highlights the
+              individual step vector \(V_k\) and the cumulative position update \(P_k=P_{k-1}+V_k\).
+            </p>
+            <video class="video-frame" controls preload="metadata" playsinline>
+              <source src="./media/videos/random_walk_manim/480p15/RandomWalkDot_dx16.mp4" type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+          </article>
+        </div>
+
+        <p>
+          The trajectory traced out on the wikipedia gif is essentially this but with very small step size.
+        </p>
       </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h2>Using Averages</h2>
+          <span class="badge">Primary source</span>
+        </div>
+        <p>
+          A single random walk is interesting, but by itself it does not tell us what the process typically does. In
+          stochastic processes we usually study behavior by running many trials and looking at the ensemble (which is a
+          fancy word for the average of something). If
+          \(X_{k,j}\) is the position of the \(k\)-th trajectory at step \(j\), then each fixed value of \(j\) gives
+          us a whole cloud of outcomes
+          \[
+          X_{1,j},\ X_{2,j},\ \ldots,\ X_{K,j}.
+          \]
+          The point is that although any one trajectory looks noisy, the collection of many trajectories can reveal
+          stable patterns.
+        </p>
+        <img class="image-frame" src="./images/RW-trajectories.png"
+          alt="A collection of random-walk trajectories plotted together with different colors." />
+        <p>
+          The notebook
+          <a href="./random_walk_ensemble.ipynb"><code>random_walk_ensemble.ipynb</code></a>
+          demonstrates this with the same random-walk model used in the Manim animation. First it plots all \(K\)
+          trajectories at once, which makes the overall spread visible. Then it computes the distance of each walk from
+          the origin at each step,
+          \[
+          \|X_{k,j}\|,
+          \]
+          and shows those values on a scatter plot. This is often more informative than staring at the raw \(x\)- and
+          \(y\)-coordinates separately, because distance from the origin is one clean summary of how far the walk has
+          wandered.
+        </p>
+        <img class="image-frame" src="./images/RWdists.png"
+          alt="Scatter plot of the distances from the origin for every trajectory at every step." />
+        <p>
+          Finally, the notebook averages those distances over all trials and defines
+          \[
+          s_j=\frac{1}{K}\sum_{k=1}^{K}\|X_{k,j}\|.
+          \]
+          The sequence \(s_j\) is an example of an ensemble statistic: it takes a random object and turns it into
+          something smoother and easier to interpret. This is exactly the philosophy we use later in the project. We do
+          not expect one stochastic trajectory to look tidy, but we can still ask meaningful questions about average
+          position, average distance, spread, and eventually whether the ensemble behaves in a Gaussian way or not.
+        </p>
+        <img class="image-frame" src="./images/RWvariance.png"
+          alt="A smoother ensemble-level plot derived from averaging over many random-walk trials." />
+        <ul class="resource-list">
+          <li>Plot 1 in the notebook shows all trajectories with different colors.</li>
+          <li>Plot 2 shows the full collection of distances \(\|X_{k,j}\|\) against step \(j\).</li>
+          <li>Plot 3 shows the averaged distance \(s_j\), which is much smoother than any one trial.</li>
+        </ul>
+        <div class="page-actions">
+          <a class="button button-secondary" href="./random_walk_ensemble.ipynb">
+            Open Ensemble Notebook
+          </a>
+        </div>
+      </article>
+
       <article class="panel">
         <div class="panel-header">
           <h2>Boltzmann</h2>
